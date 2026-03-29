@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a1628;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .canvas {
+    width: 800px;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0a1628 0%, #0f2847 50%, #0a1628 100%);
+  }
+
+  /* Grid */
+  .canvas::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Title */
+  .title-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+  .title-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+  }
+  .title-sub {
+    font-size: 9px;
+    color: #50c8a0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* Nodes */
+  .node {
+    position: absolute;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 5;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: none;
+  }
+
+  .node.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ECB/BaFin */
+  .node-ecb {
+    top: 60px; left: 30px;
+    width: 130px; height: 80px;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+  }
+
+  /* Coordination Office */
+  .node-coord {
+    top: 200px; left: 290px;
+    width: 220px; height: 100px;
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    box-shadow: 0 4px 25px rgba(13, 148, 136, 0.35);
+    border: 2px solid #50c8a0;
+  }
+
+  /* Departments */
+  .node-dept {
+    width: 100px; height: 70px;
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  }
+  .node-bcm { top: 380px; left: 70px; }
+  .node-ism { top: 380px; left: 180px; }
+  .node-irm { top: 380px; left: 290px; }
+  .node-iam { top: 380px; left: 400px; }
+  .node-outsrc { top: 380px; left: 510px; }
+  .node-crm { top: 380px; left: 620px; }
+
+  /* QA */
+  .node-qa {
+    top: 200px; right: 30px;
+    width: 130px; height: 80px;
+    background: linear-gradient(135deg, #ea580c, #dc2626);
+    box-shadow: 0 4px 20px rgba(234, 88, 12, 0.3);
+  }
+
+  /* Evidence Package */
+  .node-evidence {
+    top: 60px; right: 30px;
+    width: 130px; height: 80px;
+    background: linear-gradient(135deg, #059669, #047857);
+    box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+  }
+
+  .node-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    line-height: 1.3;
+  }
+  .node-sublabel {
+    font-size: 7px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  .node-icon {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+
+  /* SVG arrows layer */
+  .arrows-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  /* Animated dots */
+  .dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    z-index: 8;
+    opacity: 0;
+    filter: blur(0px);
+    box-shadow: 0 0 8px currentColor;
+  }
+
+  .dot.active {
+    opacity: 1;
+  }
+
+  .dot-purple { background: #a78bfa; color: #a78bfa; }
+  .dot-green { background: #50c8a0; color: #50c8a0; }
+  .dot-blue { background: #60a5fa; color: #60a5fa; }
+  .dot-orange { background: #fb923c; color: #fb923c; }
+  .dot-emerald { background: #34d399; color: #34d399; }
+
+  /* Step indicator */
+  .step-indicator {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: all 0.4s;
+  }
+  .step-dot.active {
+    background: #50c8a0;
+    box-shadow: 0 0 8px rgba(80, 200, 160, 0.5);
+  }
+
+  /* Step label */
+  .step-label {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 600;
+    color: #50c8a0;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .step-label.visible { opacity: 1; }
+
+  /* Pulse animation on active node */
+  .node.pulse {
+    animation: pulse 1s ease-in-out;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: inherit; }
+    50% { box-shadow: 0 0 30px rgba(80, 200, 160, 0.5); }
+  }
+
+  /* Path lines */
+  .path-line {
+    stroke: rgba(255,255,255,0.08);
+    stroke-width: 2;
+    fill: none;
+  }
+  .path-line-active {
+    stroke-width: 2.5;
+    fill: none;
+    stroke-dasharray: 8 4;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .path-line-active.visible {
+    opacity: 1;
+    animation: dash 1s linear infinite;
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: -12; }
+  }
+
+  /* Detail highlight glow */
+  .node.highlight {
+    box-shadow: 0 0 25px rgba(96, 165, 250, 0.7), 0 0 50px rgba(96, 165, 250, 0.3);
+    border: 2px solid #60a5fa;
+    animation: glowPulse 1s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 25px rgba(96, 165, 250, 0.7), 0 0 50px rgba(96, 165, 250, 0.3); }
+    50% { box-shadow: 0 0 35px rgba(96, 165, 250, 0.9), 0 0 70px rgba(96, 165, 250, 0.5); }
+  }
+
+  /* Dimmed nodes in detail view */
+  .node.dimmed {
+    opacity: 0.25 !important;
+  }
+
+  /* Anforderung badge */
+  .req-badge {
+    position: absolute;
+    top: 460px;
+    left: 505px;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    border: 1px solid #60a5fa;
+    border-radius: 8px;
+    padding: 5px 12px;
+    z-index: 12;
+    opacity: 0;
+    transition: opacity 0.5s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .req-badge.visible { opacity: 1; }
+  .req-badge-num {
+    font-size: 13px;
+    font-weight: 800;
+    color: #60a5fa;
+  }
+  .req-badge-label {
+    font-size: 7px;
+    color: rgba(255,255,255,0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* +1 popup */
+  .plus-one {
+    position: absolute;
+    top: 140px;
+    left: 370px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #50c8a0;
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    text-shadow: 0 0 10px rgba(80, 200, 160, 0.6);
+  }
+  .plus-one.pop {
+    animation: popUp 1.2s ease-out forwards;
+  }
+  @keyframes popUp {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 1; transform: translateY(-5px) scale(1.2); }
+    50% { opacity: 1; transform: translateY(-15px) scale(1); }
+    100% { opacity: 0; transform: translateY(-30px) scale(0.8); }
+  }
+
+  /* Status toast notifications */
+  .status-toast {
+    position: absolute;
+    z-index: 15;
+    background: rgba(10, 22, 40, 0.92);
+    border-radius: 6px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: none;
+    pointer-events: none;
+  }
+  .status-toast.show {
+    animation: toastIn 0.4s ease-out forwards;
+  }
+  .status-toast.hide {
+    animation: toastOut 0.4s ease-in forwards;
+  }
+  @keyframes toastIn {
+    0% { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toastOut {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-4px); }
+  }
+  .status-toast-text {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  /* Eingang bestätigt - top-right inside Coord node */
+  .toast-confirm {
+    top: 204px;
+    left: 400px;
+    border: 1px solid rgba(80, 200, 160, 0.4);
+  }
+  .toast-confirm .status-toast-text { color: #50c8a0; }
+  /* QS ok - top-right inside Coord node */
+  .toast-qs {
+    top: 204px;
+    left: 430px;
+    border: 1px solid rgba(52, 211, 153, 0.5);
+  }
+  .toast-qs .status-toast-text { color: #34d399; }
+
+  /* Navigation controls */
+  .nav-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+  }
+  .nav-btn {
+    background: rgba(15, 40, 71, 0.85);
+    border: 1px solid rgba(80, 200, 160, 0.3);
+    border-radius: 8px;
+    padding: 6px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s;
+    outline: none;
+  }
+  .nav-btn:hover {
+    background: rgba(20, 55, 95, 0.95);
+    border-color: rgba(80, 200, 160, 0.6);
+    box-shadow: 0 0 12px rgba(80, 200, 160, 0.2);
+  }
+  .nav-btn:active {
+    transform: scale(0.96);
+  }
+  .nav-btn-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: #50c8a0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .nav-btn svg { flex-shrink: 0; }
+  .nav-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Counter animation */
+  .counter-box {
+    position: absolute;
+    top: 160px;
+    left: 340px;
+    background: rgba(15, 40, 71, 0.9);
+    border: 1px solid rgba(80, 200, 160, 0.3);
+    border-radius: 8px;
+    padding: 6px 14px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .counter-box.visible { opacity: 1; }
+  .counter-num {
+    font-size: 16px;
+    font-weight: 800;
+    color: #50c8a0;
+  }
+  .counter-label {
+    font-size: 7px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+<div class="canvas" id="canvas">
+
+  <!-- Title -->
+  <div class="title-bar">
+    <div>
+      <div class="title-text">EZB/BaFin On-Site Inspection</div>
+      <div style="font-size:8px;color:rgba(160,200,230,0.5);margin-top:2px;">Koordination des Informationsflusses</div>
+    </div>
+    <div class="title-sub">Christian Hassert | Koordinationsoffice</div>
+  </div>
+
+  <!-- SVG paths -->
+  <svg class="arrows-layer" viewBox="0 0 800 600">
+    <!-- ECB -> Coord -->
+    <path class="path-line" d="M 160 100 Q 250 110 330 192" />
+    <path class="path-line-active" id="path1" d="M 160 100 Q 250 110 330 192" stroke="#a78bfa" />
+
+    <!-- Coord -> Departments (6) -->
+    <path class="path-line" d="M 340 300 Q 240 350 120 380" />
+    <path class="path-line" d="M 360 300 Q 300 340 230 380" />
+    <path class="path-line" d="M 380 300 Q 360 340 340 380" />
+    <path class="path-line" d="M 420 300 Q 430 340 450 380" />
+    <path class="path-line" d="M 440 300 Q 490 340 560 380" />
+    <path class="path-line" d="M 460 300 Q 560 340 670 380" />
+    <path class="path-line-active" id="path2a" d="M 340 300 Q 240 350 120 380" stroke="#60a5fa" />
+    <path class="path-line-active" id="path2b" d="M 360 300 Q 300 340 230 380" stroke="#60a5fa" />
+    <path class="path-line-active" id="path2c" d="M 380 300 Q 360 340 340 380" stroke="#60a5fa" />
+    <path class="path-line-active" id="path2d" d="M 420 300 Q 430 340 450 380" stroke="#60a5fa" />
+    <path class="path-line-active" id="path2e" d="M 440 300 Q 490 340 560 380" stroke="#60a5fa" />
+    <path class="path-line-active" id="path2f" d="M 460 300 Q 560 340 670 380" stroke="#60a5fa" />
+
+    <!-- Auslagerungsmanagement -> Coord (return, routed right to avoid overlap) -->
+    <path class="path-line" d="M 565 380 Q 595 300 515 248" />
+    <path class="path-line-active" id="pathReturn" d="M 565 380 Q 595 300 515 248" stroke="#50c8a0" />
+
+    <!-- Coord -> Evidence -->
+    <path class="path-line" d="M 460 192 Q 560 130 640 100" />
+    <path class="path-line-active" id="path5" d="M 460 192 Q 560 130 640 100" stroke="#34d399" />
+
+    <!-- Evidence -> ECB -->
+    <path class="path-line" d="M 640 80 Q 400 40 160 80" />
+    <path class="path-line-active" id="path6" d="M 640 80 Q 400 40 160 80" stroke="#34d399" />
+  </svg>
+
+  <!-- Nodes -->
+  <div class="node node-ecb" id="nodeEcb">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <div class="node-label" style="margin-top:4px;">EZB / BaFin</div>
+    <div class="node-sublabel">Informations-<br>anforderungen</div>
+  </div>
+
+  <div class="node node-coord" id="nodeCoord">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <div class="node-label" style="margin-top:4px;">Koordinationsoffice</div>
+    <div class="node-sublabel">Analyse, Steuerung<br>& Qualit&auml;tssicherung</div>
+  </div>
+
+  <div class="node node-dept node-bcm" id="nodeBcm">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <div class="node-label" style="margin-top:3px;">BCM</div>
+  </div>
+  <div class="node node-dept node-ism" id="nodeIsm">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    <div class="node-label" style="margin-top:3px;">ISM</div>
+  </div>
+  <div class="node node-dept node-irm" id="nodeIrm">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div class="node-label" style="margin-top:3px;">IRM</div>
+  </div>
+  <div class="node node-dept node-iam" id="nodeIam">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+    <div class="node-label" style="margin-top:3px;">IAM</div>
+  </div>
+  <div class="node node-dept node-outsrc" id="nodeOutsrc">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+    <div class="node-label" style="margin-top:3px;font-size:7px;">Auslagerungs-<br>management</div>
+  </div>
+  <div class="node node-dept node-crm" id="nodeCrm">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    <div class="node-label" style="margin-top:3px;font-size:7px;">Change &amp;<br>Release Mgmt</div>
+  </div>
+
+  <div class="node node-qa" id="nodeQa">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <div class="node-label" style="margin-top:4px;">Qualit&auml;ts-<br>sicherung</div>
+    <div class="node-sublabel">2nd LoD Alignment</div>
+  </div>
+
+  <div class="node node-evidence" id="nodeEvidence">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <div class="node-label" style="margin-top:4px;">Evidenzpaket</div>
+    <div class="node-sublabel">Audit-ready<br>Dokumentation</div>
+  </div>
+
+  <!-- Status toasts -->
+  <div class="status-toast toast-confirm" id="toastConfirm">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#50c8a0" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <div class="status-toast-text">Eingang best&auml;tigt</div>
+  </div>
+  <div class="status-toast toast-qs" id="toastQs">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <div class="status-toast-text">QS ok ✓</div>
+  </div>
+
+  <!-- Counter -->
+  <div class="counter-box" id="counter">
+    <div class="counter-num" id="counterNum">199</div>
+    <div class="counter-label">Anforderungen<br>gesteuert</div>
+  </div>
+  <div class="plus-one" id="plusOne">+1</div>
+
+  <!-- 24h Timer -->
+  <div class="counter-box" id="timerBox" style="top:160px;left:150px;border-color:rgba(239,68,68,0.4);">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <div>
+      <div class="counter-num" style="color:#ef4444;font-size:14px;" id="timerNum">24:00</div>
+      <div class="counter-label">Frist pro<br>Anforderung</div>
+    </div>
+  </div>
+
+  <!-- Anforderung Badge -->
+  <div class="req-badge" id="reqBadge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <div>
+      <div class="req-badge-num" id="reqNum">#200</div>
+      <div class="req-badge-label">Anforderung</div>
+    </div>
+  </div>
+
+  <!-- Step label + indicators -->
+  <div class="step-label" id="stepLabel"></div>
+  <div class="step-indicator">
+    <div class="step-dot" id="sd1"></div>
+    <div class="step-dot" id="sd2"></div>
+    <div class="step-dot" id="sd3"></div>
+    <div class="step-dot" id="sd4"></div>
+    <div class="step-dot" id="sd5"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-controls">
+    <button class="nav-btn" id="btnPrev" title="Zurück">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#50c8a0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="nav-btn" id="btnNext" title="Weiter">
+      <span class="nav-btn-text">Weiter</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#50c8a0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Animated dots -->
+  <div class="dot dot-purple" id="dotIncoming"></div>
+  <div class="dot dot-blue" id="dotToOutsrc"></div>
+  <div class="dot dot-green" id="dotReturn"></div>
+  <div class="dot dot-emerald" id="dotEvidence"></div>
+  <div class="dot dot-emerald" id="dotDeliver"></div>
+
+</div>
+
+<script>
+const STEP_DURATION = 3750;
+const TOTAL_STEPS = 5;
+let currentStep = 0;
+
+const allDepts = ["nodeBcm", "nodeIsm", "nodeIrm", "nodeIam", "nodeOutsrc", "nodeCrm"];
+const allVisible = ["nodeEcb", "nodeCoord", ...allDepts, "nodeEvidence"];
+
+const steps = [
+  {
+    label: "1. Anforderung #200 von EZB/BaFin (Frist: 24h)",
+    showNodes: allVisible,
+    glowNodes: ["nodeEcb", "nodeCoord"],
+    paths: ["path1"],
+    dots: [{ id: "dotIncoming", path: "path1" }],
+    counter: 199,
+    timer: "24:00",
+    showBadge: false,
+    showPlusOne: false,
+  },
+  {
+    label: "2. Weiterleitung #200 → Auslagerungsmanagement",
+    showNodes: allVisible,
+    glowNodes: ["nodeCoord", "nodeOutsrc"],
+    paths: ["path2e"],
+    dots: [{ id: "dotToOutsrc", path: "path2e" }],
+    counter: 199,
+    timer: "20:00",
+    showBadge: true,
+    badgeText: "#200",
+    badgeColor: "#60a5fa",
+    showPlusOne: false,
+  },
+  {
+    label: "3. Evidenz zurück an Koordinationsoffice → 200 gesteuert",
+    showNodes: allVisible,
+    glowNodes: ["nodeOutsrc", "nodeCoord"],
+    paths: ["pathReturn"],
+    dots: [{ id: "dotReturn", path: "pathReturn" }],
+    counter: 200,
+    timer: "12:00",
+    showBadge: true,
+    badgeText: "#200 ✓",
+    badgeColor: "#34d399",
+    showPlusOne: true,
+  },
+  {
+    label: "4. Evidenzpaket zusammenstellen",
+    showNodes: allVisible,
+    glowNodes: ["nodeCoord", "nodeEvidence"],
+    paths: ["path5"],
+    dots: [{ id: "dotEvidence", path: "path5" }],
+    counter: 200,
+    timer: "08:00",
+    showBadge: false,
+    showPlusOne: false,
+  },
+  {
+    label: "5. Lieferung an EZB/BaFin — 6h vor Frist ✓",
+    showNodes: allVisible,
+    glowNodes: ["nodeEvidence", "nodeEcb"],
+    paths: ["path6"],
+    dots: [{ id: "dotDeliver", path: "path6" }],
+    counter: 200,
+    timer: "06:00",
+    showBadge: false,
+    showPlusOne: false,
+  },
+];
+
+function animateDotAlongPath(dotId, pathId, duration) {
+  const dot = document.getElementById(dotId);
+  const path = document.getElementById(pathId);
+  if (!dot || !path) return;
+
+  const len = path.getTotalLength();
+  dot.classList.add("active");
+  const start = performance.now();
+
+  function frame(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    const pt = path.getPointAtLength(eased * len);
+    dot.style.left = (pt.x - 5) + "px";
+    dot.style.top = (pt.y - 5) + "px";
+    if (t < 1) requestAnimationFrame(frame);
+    else dot.classList.remove("active");
+  }
+  requestAnimationFrame(frame);
+}
+
+function animateCounter(target, duration) {
+  const el = document.getElementById("counterNum");
+  const box = document.getElementById("counter");
+  box.classList.add("visible");
+  const startVal = parseInt(el.textContent) || 0;
+  const start = performance.now();
+
+  function frame(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const val = Math.round(startVal + (target - startVal) * t);
+    el.textContent = val;
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function animateTimer(targetTime, duration) {
+  const timerBox = document.getElementById("timerBox");
+  const timerEl = document.getElementById("timerNum");
+  timerBox.classList.add("visible");
+
+  const currentText = timerEl.textContent || "24:00";
+  const [curM, curS] = currentText.split(":").map(Number);
+  const [tgtM, tgtS] = targetTime.split(":").map(Number);
+  const startSec = curM * 60 + curS;
+  const endSec = tgtM * 60 + tgtS;
+  const start = performance.now();
+  const svgCircle = document.querySelector("#timerBox svg circle");
+  const svgPoly = document.querySelector("#timerBox svg polyline");
+
+  function frame(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const sec = Math.round(startSec + (endSec - startSec) * t);
+    const m = Math.floor(Math.abs(sec) / 60);
+    const s = Math.abs(sec) % 60;
+    timerEl.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+
+    // Green when delivered early (6h remaining)
+    if (endSec <= 360 && t > 0.8) {
+      timerEl.style.color = "#34d399";
+      svgCircle.setAttribute("stroke", "#34d399");
+      svgPoly.setAttribute("stroke", "#34d399");
+    } else {
+      timerEl.style.color = "#ef4444";
+      svgCircle.setAttribute("stroke", "#ef4444");
+      svgPoly.setAttribute("stroke", "#ef4444");
+    }
+
+    if (t < 1) {
+      requestAnimationFrame(frame);
+    } else if (endSec <= 360) {
+      // Add checkmark when timer reaches final delivery time
+      timerEl.textContent = timerEl.textContent + " ✓";
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function runStep(stepIdx) {
+  const step = steps[stepIdx];
+
+  // Step dots
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    document.getElementById("sd" + i).classList.toggle("active", i <= stepIdx + 1);
+  }
+
+  // Step label
+  const label = document.getElementById("stepLabel");
+  label.textContent = step.label;
+  label.classList.add("visible");
+
+  // Reset all nodes
+  document.querySelectorAll(".node").forEach(n => {
+    n.classList.remove("visible", "pulse", "highlight");
+  });
+
+  // Show all nodes for this step (all bright, no dimming)
+  step.showNodes.forEach(id => {
+    document.getElementById(id).classList.add("visible");
+  });
+
+  // Pulse/glow only the active nodes in this step
+  step.glowNodes.forEach(id => {
+    document.getElementById(id).classList.add("highlight");
+  });
+
+  // Badge
+  const reqBadge = document.getElementById("reqBadge");
+  const reqNum = document.getElementById("reqNum");
+  if (step.showBadge) {
+    reqBadge.classList.add("visible");
+    reqNum.textContent = step.badgeText;
+    reqNum.style.color = step.badgeColor;
+  } else {
+    reqBadge.classList.remove("visible");
+  }
+
+  // Paths
+  document.querySelectorAll(".path-line-active").forEach(p => p.classList.remove("visible"));
+  step.paths.forEach(id => document.getElementById(id).classList.add("visible"));
+
+  // Dots
+  step.dots.forEach(d => {
+    setTimeout(() => animateDotAlongPath(d.id, d.path, 2100), 400);
+  });
+
+  // +1 popup — trigger when dot arrives at Koordinationsoffice
+  const plusOne = document.getElementById("plusOne");
+  plusOne.classList.remove("pop");
+  if (step.showPlusOne) {
+    setTimeout(() => {
+      plusOne.classList.add("pop");
+    }, 2400);
+  }
+
+  // Status toasts
+  const toastConfirm = document.getElementById("toastConfirm");
+  const toastQs = document.getElementById("toastQs");
+  toastConfirm.classList.remove("show", "hide");
+  toastQs.classList.remove("show", "hide");
+
+  if (stepIdx === 0) {
+    // "Eingang bestätigt" when dot arrives at Koordinationsoffice
+    setTimeout(() => { toastConfirm.classList.add("show"); }, 2300);
+    setTimeout(() => { toastConfirm.classList.remove("show"); toastConfirm.classList.add("hide"); }, 3500);
+  }
+  if (stepIdx === 2) {
+    // "QS ok ✓" when evidence returns to Koordinationsoffice
+    setTimeout(() => { toastQs.classList.add("show"); }, 2300);
+    setTimeout(() => { toastQs.classList.remove("show"); toastQs.classList.add("hide"); }, 3500);
+  }
+
+  // Timer & Counter: on step 1 (loop restart), set both instantly — no animation
+  if (stepIdx === 0) {
+    // Reset counter to 199 instantly (no animation from 200→199)
+    document.getElementById("counterNum").textContent = "199";
+    document.getElementById("counter").classList.add("visible");
+
+    // Reset timer to 24:00 instantly
+    const timerEl = document.getElementById("timerNum");
+    timerEl.textContent = "24:00";
+    timerEl.style.color = "#ef4444";
+    document.querySelector("#timerBox svg circle").setAttribute("stroke", "#ef4444");
+    document.querySelector("#timerBox svg polyline").setAttribute("stroke", "#ef4444");
+    document.getElementById("timerBox").classList.add("visible");
+  } else if (step.showPlusOne) {
+    // Step 3: delay counter until dot arrives, then jump 199→200
+    animateTimer(step.timer, 2200);
+    setTimeout(() => {
+      animateCounter(step.counter, 400);
+    }, 2300);
+  } else {
+    // Other steps: animate counter & timer normally
+    animateCounter(step.counter, 2200);
+    animateTimer(step.timer, 2200);
+  }
+}
+
+function updateButtons() {
+  document.getElementById("btnPrev").classList.toggle("disabled", currentStep <= 0);
+  // Change label on last step
+  const nextText = document.querySelector("#btnNext .nav-btn-text");
+  if (currentStep >= TOTAL_STEPS - 1) {
+    nextText.textContent = "Neustart";
+  } else {
+    nextText.textContent = "Weiter";
+  }
+}
+
+function goToStep(idx) {
+  currentStep = idx;
+  runStep(currentStep);
+  updateButtons();
+}
+
+// Button handlers
+document.getElementById("btnNext").addEventListener("click", () => {
+  if (currentStep >= TOTAL_STEPS - 1) {
+    goToStep(0);
+  } else {
+    goToStep(currentStep + 1);
+  }
+});
+
+document.getElementById("btnPrev").addEventListener("click", () => {
+  if (currentStep > 0) {
+    goToStep(currentStep - 1);
+  }
+});
+
+// Keyboard support
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight" || e.key === " ") {
+    e.preventDefault();
+    document.getElementById("btnNext").click();
+  } else if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    document.getElementById("btnPrev").click();
+  }
+});
+
+// Start at step 1
+goToStep(0);
+</script>
+</body>
+</html>

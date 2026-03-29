@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christian Hassert | IT Security &amp; GRC Consulting</title>
+<meta name="description" content="Freelance IT Security & GRC Consultant — ISMS, Audit Readiness, DORA, ISO 27001. 9+ Jahre Big4-Erfahrung.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1628;
+    --bg2: #0f2847;
+    --accent: #50c8a0;
+    --accent2: #34d399;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+    --text: #e2e8f0;
+    --text-dim: rgba(255,255,255,0.55);
+    --card: rgba(15, 40, 71, 0.6);
+    --border: rgba(80, 200, 160, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orbs */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(80,200,160,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Header ── */
+  header {
+    padding: 60px 0 40px;
+    text-align: center;
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .header-sub {
+    font-size: 16px;
+    color: var(--text-dim);
+    font-weight: 400;
+    max-width: 520px;
+    margin: 0 auto 24px;
+  }
+  .header-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  .tag.blue { color: var(--blue); border-color: rgba(96,165,250,0.2); }
+  .tag.purple { color: var(--purple); border-color: rgba(167,139,250,0.2); }
+
+  /* ── Section ── */
+  section {
+    margin-bottom: 56px;
+  }
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Animation showcase ── */
+  .showcase {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--card);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+  .showcase iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
+  }
+  .showcase-caption {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .showcase-title {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .showcase-hint {
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── Stats row ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 6px;
+  }
+
+  /* ── Expertise grid ── */
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .expertise-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+  }
+  .expertise-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .expertise-icon.green { background: rgba(80,200,160,0.12); }
+  .expertise-icon.blue { background: rgba(96,165,250,0.12); }
+  .expertise-icon.purple { background: rgba(167,139,250,0.12); }
+  .expertise-card h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .expertise-card p {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── Experience timeline ── */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 6px; bottom: 6px;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 7px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-item.current::before {
+    box-shadow: 0 0 0 3px rgba(80,200,160,0.25);
+  }
+  .tl-period {
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .tl-role {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .tl-company {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .tl-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── Certifications ── */
+  .certs {
+    display: flex;
+    gap: 16px;
+  }
+  .cert-badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cert-logo {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: rgba(80,200,160,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .cert-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .cert-org {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Contact ── */
+  .contact-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.25s;
+  }
+  .contact-link:hover {
+    border-color: rgba(80,200,160,0.4);
+    box-shadow: 0 0 16px rgba(80,200,160,0.1);
+    transform: translateY(-1px);
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  footer p {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    h1 { font-size: 26px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .expertise-grid { grid-template-columns: 1fr; }
+    .showcase iframe { height: 400px; }
+    .certs { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="header-label">Freelance Consultant</div>
+    <h1>Christian Hassert</h1>
+    <p class="header-sub">IT Security &amp; GRC Consulting f&uuml;r regulierte Unternehmen. 9+ Jahre Big4-Erfahrung. DACH &amp; EU.</p>
+    <div class="header-tags">
+      <span class="tag">CISA</span>
+      <span class="tag">CISM</span>
+      <span class="tag blue">ISO 27001</span>
+      <span class="tag blue">DORA</span>
+      <span class="tag purple">ex-KPMG</span>
+      <span class="tag">Remote &amp; Onsite</span>
+    </div>
+  </header>
+
+  <!-- Case Study: Animation -->
+  <section>
+    <div class="section-label">Case Study — EZB/BaFin On-Site Inspection</div>
+    <div class="showcase">
+      <iframe src="animation_process.html" title="EZB/BaFin Inspection Process Animation"></iframe>
+      <div class="showcase-caption">
+        <span class="showcase-title">Koordination des Informationsflusses — 200+ Anforderungen, 24h-Frist</span>
+        <span class="showcase-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          Klicke &quot;Weiter&quot; oder nutze Pfeiltasten
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num">9+</div>
+        <div class="stat-label">Jahre Big4</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Anforderungen gesteuert</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">18</div>
+        <div class="stat-label">Monate EZB Inspection</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Standorte betreut</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertise -->
+  <section>
+    <div class="section-label">Kernkompetenzen</div>
+    <div class="expertise-grid">
+      <div class="expertise-card">
+        <div class="expertise-icon green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#50c8a0" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>ISMS &amp; ISO 27001</h3>
+        <p>Aufbau, Betrieb und Zertifizierungsbegleitung. BSI IT-Grundschutz. Policy-Entwicklung und Risikoanalysen.</p>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>Regulatorik &amp; Compliance</h3>
+        <p>DORA, NIS-2, MaRisk, BAIT/VAIT. Audit-Readiness und Gap-Analysen f&uuml;r beaufsichtigte Institute.</p>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon purple">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Audit &amp; Assurance</h3>
+        <p>IT-Pr&uuml;fungen nach IDW, ISAE 3402, SOX. Koordination von Aufsichtspr&uuml;fungen (EZB/BaFin).</p>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#50c8a0" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09"/></svg>
+        </div>
+        <h3>GRC-Tooling</h3>
+        <p>ServiceNow GRC Workflows, Jira, Confluence. Automatisierung und Effizienzsteigerung (40% weniger manueller Aufwand).</p>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        </div>
+        <h3>IAM &amp; BCM</h3>
+        <p>Identity &amp; Access Management Governance. Business Continuity Management und Business Impact Analysen.</p>
+      </div>
+      <div class="expertise-card">
+        <div class="expertise-icon purple">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <h3>Projektsteuerung</h3>
+        <p>Stakeholder-Management auf Leitungsebene. Evidenzmanagement, Remediation Tracking, Eskalationsmanagement.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section>
+    <div class="section-label">Erfahrung</div>
+    <div class="timeline">
+      <div class="tl-item current">
+        <div class="tl-period">Seit April 2024</div>
+        <div class="tl-role">Freelance IT Security &amp; GRC Consultant</div>
+        <div class="tl-company">Selbstst&auml;ndig — DACH &amp; EU</div>
+        <div class="tl-desc">DORA-Programme, IT-regulatorische Compliance, ISO 27001 Advisory. Gap Assessments, Remediation Tracking, Evidenzvorbereitung.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">Okt 2020 — M&auml;rz 2024</div>
+        <div class="tl-role">Senior Consultant / Assistant Manager</div>
+        <div class="tl-company">KPMG Deutschland</div>
+        <div class="tl-desc">18-monatige EZB/BaFin On-Site Inspection koordiniert (200+ Anforderungen). Globale IT-Governance-Restrukturierung f&uuml;r R&uuml;ckversicherer (50+ Standorte). ISMS-Beratung, DORA, BAIT/VAIT.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">Nov 2015 — Sep 2020</div>
+        <div class="tl-role">Senior IT Auditor / Audit Lead</div>
+        <div class="tl-company">KPMG Deutschland</div>
+        <div class="tl-desc">IT-Pr&uuml;fungen f&uuml;r Banken und Versicherungen (MaRisk, BAIT, GDPR). SOX Key Controls Testing. Risikobasierte Pr&uuml;fungsplanung mit 15-20% Budget-Effizienzsteigerung.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section>
+    <div class="section-label">Zertifizierungen</div>
+    <div class="certs">
+      <div class="cert-badge">
+        <div class="cert-logo">CISA</div>
+        <div>
+          <div class="cert-name">Certified Information Systems Auditor</div>
+          <div class="cert-org">ISACA &middot; 2025</div>
+        </div>
+      </div>
+      <div class="cert-badge">
+        <div class="cert-logo">CISM</div>
+        <div>
+          <div class="cert-name">Certified Information Security Manager</div>
+          <div class="cert-org">ISACA &middot; 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section style="text-align:center;">
+    <div class="section-label">Kontakt</div>
+    <div class="contact-row">
+      <a class="contact-link" href="https://linkedin.com/in/christian-hassert" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a class="contact-link" href="mailto:chr.hassert@gmail.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+        E-Mail
+      </a>
+      <a class="contact-link" href="https://github.com/chrhassert" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        GitHub
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Christian Hassert &middot; IT Security &amp; GRC Consulting</p>
+  </div>
+</footer>
+
+</body>
+</html>

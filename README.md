@@ -1,16 +1,15 @@
-## Hi there 👋
+# Portfolio — Christian Hassert
 
-<!--
-**christianhassert/christianhassert** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+IT Security & GRC Consulting Portfolio, hosted via GitHub Pages.
 
-Here are some ideas to get you started:
+## Setup
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+1. Create a new repository named `chrhassert.github.io`
+2. Push these files to the `main` branch
+3. Go to **Settings → Pages → Source: Deploy from branch (main)**
+4. The site will be live at `https://chrhassert.github.io`
+
+## Files
+
+- `index.html` — Portfolio landing page
+- `animation_process.html` — Interactive EZB/BaFin inspection process animation
