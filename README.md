@@ -21,103 +21,103 @@
 
 ---
 
-### Über mich
+### About Me
 
-Freelance IT Security & GRC Consultant mit über 9 Jahren Erfahrung bei KPMG Deutschland im Bereich regulierte Finanzdienstleistungen. Ich unterstütze Banken, Versicherungen und kritische Infrastrukturen dabei, regulatorische Anforderungen effizient in belastbare Sicherheits- und Kontrollstrukturen zu übersetzen.
+Freelance IT Security & GRC Consultant with 9+ years of experience at KPMG Germany in regulated financial services. I help banks, insurers, and critical infrastructure operators translate regulatory requirements into robust security and control frameworks.
 
-Mein Schwerpunkt liegt auf der Brücke zwischen Regulatorik und operativer Umsetzung — von der Gap-Analyse über die Maßnahmensteuerung bis zur auditfesten Dokumentation.
+My focus is bridging the gap between regulation and operational implementation — from gap analysis and remediation management to audit-ready documentation.
 
 ---
 
-### Was ich tue
+### What I Do
 
 <table>
   <tr>
     <td align="center" width="33%">
       <h4>ISMS & ISO 27001</h4>
-      <p>Aufbau, Betrieb und kontinuierliche Verbesserung von Informationssicherheits-Managementsystemen. Audit Readiness & Zertifizierungsbegleitung.</p>
+      <p>Setup, operation, and continuous improvement of Information Security Management Systems. Audit readiness & certification support.</p>
     </td>
     <td align="center" width="33%">
-      <h4>Regulatorische Compliance</h4>
-      <p>DORA, MaRisk, BAIT, VAIT, NIS2 — Anforderungsanalyse, Gap-Assessments und Umsetzungsbegleitung für regulierte Institute.</p>
+      <h4>Regulatory Compliance</h4>
+      <p>DORA, MaRisk, BAIT, VAIT, NIS2 — requirements analysis, gap assessments, and implementation guidance for regulated institutions.</p>
     </td>
     <td align="center" width="33%">
       <h4>Audit & Inspection Readiness</h4>
-      <p>Koordination von EZB/BaFin-Prüfungen, Evidenzmanagement, Stakeholder-Steuerung und Findings-Nachverfolgung.</p>
+      <p>Coordination of ECB/BaFin inspections, evidence management, stakeholder steering, and findings remediation tracking.</p>
     </td>
   </tr>
   <tr>
     <td align="center" width="33%">
-      <h4>GRC & Risikomanagement</h4>
-      <p>IKS-Frameworks, Kontrollmapping, Reifegradbewertungen und Remediation-Programme mit klarer Nachverfolgung.</p>
+      <h4>GRC & Risk Management</h4>
+      <p>ICS frameworks, control mapping, maturity assessments, and remediation programs with transparent tracking.</p>
     </td>
     <td align="center" width="33%">
-      <h4>IT-Prüfung & Controls</h4>
-      <p>GITC-Tests (Access, Change, Release Management), SOX Key Controls, ISAE 3402 — Design- und Wirksamkeitsprüfung.</p>
+      <h4>IT Audit & Controls</h4>
+      <p>GITC testing (access, change, release management), SOX key controls, ISAE 3402 — design and operating effectiveness reviews.</p>
     </td>
     <td align="center" width="33%">
       <h4>Security Governance</h4>
-      <p>Globale IS-Governance-Strukturen, RACI/RASCI, Prozessdesign für SOC, Incident Response und Vulnerability Management.</p>
+      <p>Global IS governance structures, RACI/RASCI, process design for SOC, Incident Response, and Vulnerability Management.</p>
     </td>
   </tr>
 </table>
 
 ---
 
-### Ausgewählte Projekte
+### Selected Projects
 
-| Projekt | Kontext | Ergebnis |
-|---------|---------|----------|
-| **EZB/BaFin On-Site Inspection** | Systemrelevante Landesbank — 18 Monate, 200+ Anforderungen | Erfolgreiche Koordination über 5+ Stakeholder-Gruppen mit transparentem Tracking |
-| **Globaler IS-Governance Aufbau** | Internationaler Rückversicherer — 50+ Standorte, 6 Kontinente | Operationalisierung der gruppenweiten IS-Governance inkl. RACI, Prozesse & Policies |
-| **SOC Target Operating Model** | Internationale Bank (mit IBM) — Security Architecture | Konsolidierung fragmentierter SOC-Prozesse in ein skalierbares Betriebsmodell |
-| **IFRS-9 Transformation** | Genossenschaftliche Zentralbank — Impairment Engine | Zero-Defect-Validierung des komplexen Berechnungssystems |
+| Project | Context | Outcome |
+|---------|---------|---------|
+| **ECB/BaFin On-Site Inspection** | Systemically important regional bank — 18 months, 200+ requests | Successfully coordinated across 5+ stakeholder groups with transparent tracking |
+| **Global IS Governance Build-Up** | International reinsurer — 50+ locations, 6 continents | Operationalized group-level IS governance incl. RACI, processes & policies |
+| **SOC Target Operating Model** | International bank (with IBM) — Security Architecture | Consolidated fragmented SOC processes into a scalable operating model |
 
-> Interaktive Visualisierung meines Koordinationsprozesses: [chrhassert.github.io](https://chrhassert.github.io)
+> Interactive visualization of my coordination process: [chrhassert.github.io](https://chrhassert.github.io)
 
 ---
 
-### Frameworks & Regulatorik
+### Frameworks & Regulations
 
-```
-ISO 27001/27005  ·  BSI IT-Grundschutz  ·  DORA  ·  MaRisk  ·  BAIT  ·  VAIT
-NIS2  ·  SOX / RRCM  ·  ISAE 3000/3402  ·  IDW PS 330/951  ·  IDW RS FAIT 1
-NIST CSF  ·  ISO 9001  ·  COBIT  ·  TISAX
-```
+<p align="center">
+  <img src="https://img.shields.io/badge/ISO%2027001%2F27005-00897B?style=flat-square" alt="ISO 27001/27005"/>
+  <img src="https://img.shields.io/badge/BSI%20IT--Grundschutz-1565C0?style=flat-square" alt="BSI IT-Grundschutz"/>
+  <img src="https://img.shields.io/badge/DORA-FF6D00?style=flat-square" alt="DORA"/>
+  <img src="https://img.shields.io/badge/MaRisk-7B1FA2?style=flat-square" alt="MaRisk"/>
+  <img src="https://img.shields.io/badge/BAIT-7B1FA2?style=flat-square" alt="BAIT"/>
+  <img src="https://img.shields.io/badge/VAIT-7B1FA2?style=flat-square" alt="VAIT"/>
+  <img src="https://img.shields.io/badge/NIS2-E65100?style=flat-square" alt="NIS2"/>
+  <img src="https://img.shields.io/badge/SOX%20%2F%20RRCM-2962FF?style=flat-square" alt="SOX / RRCM"/>
+  <img src="https://img.shields.io/badge/ISAE%203000%2F3402-2962FF?style=flat-square" alt="ISAE 3000/3402"/>
+  <img src="https://img.shields.io/badge/IDW%20PS%20330%2F951-455A64?style=flat-square" alt="IDW PS 330/951"/>
+  <img src="https://img.shields.io/badge/IDW%20RS%20FAIT%201-455A64?style=flat-square" alt="IDW RS FAIT 1"/>
+  <img src="https://img.shields.io/badge/NIST%20CSF-0D47A1?style=flat-square" alt="NIST CSF"/>
+</p>
 
 ### Tools
 
-```
-ServiceNow GRC  ·  RSA Archer  ·  Jira  ·  Confluence  ·  SharePoint
-MS Office Suite  ·  Python  ·  Git
-```
-
----
-
-### Zahlen & Fakten
-
 <p align="center">
-  <img src="https://img.shields.io/badge/9%2B%20Jahre-Big4%20%28KPMG%29-2962FF?style=for-the-badge" alt="9+ Jahre KPMG"/>
-  <img src="https://img.shields.io/badge/200%2B-Anforderungen%20gesteuert-3EE8B5?style=for-the-badge" alt="200+ Anforderungen"/>
-  <img src="https://img.shields.io/badge/50%2B-Standorte%20global-FF6D00?style=for-the-badge" alt="50+ Standorte"/>
-  <img src="https://img.shields.io/badge/CISA%20%2B%20CISM-Zertifiziert%202025-7B1FA2?style=for-the-badge" alt="CISA + CISM"/>
+  <img src="https://img.shields.io/badge/ServiceNow%20GRC-00897B?style=flat-square" alt="ServiceNow GRC"/>
+  <img src="https://img.shields.io/badge/RSA%20Archer-1565C0?style=flat-square" alt="RSA Archer"/>
+  <img src="https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=jira&logoColor=white" alt="Jira"/>
+  <img src="https://img.shields.io/badge/Confluence-172B4D?style=flat-square&logo=confluence&logoColor=white" alt="Confluence"/>
+  <img src="https://img.shields.io/badge/SharePoint-0078D4?style=flat-square&logo=microsoftsharepoint&logoColor=white" alt="SharePoint"/>
+  <img src="https://img.shields.io/badge/MS%20Office-D83B01?style=flat-square&logo=microsoftoffice&logoColor=white" alt="MS Office"/>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" alt="Git"/>
 </p>
 
 ---
 
-### Sprachen
-
-Deutsch (Muttersprache) · Englisch (C1, verhandlungssicher) · Polnisch (B2, konversationssicher)
-
----
-
-### Verfügbarkeit
+### Key Figures
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Verfügbar%20für%20Projekte-3EE8B5?style=for-the-badge" alt="Verfügbar"/>
+  <img src="https://img.shields.io/badge/9%2B%20Years-Big4%20%28KPMG%29-2962FF?style=for-the-badge" alt="9+ Years KPMG"/>
+  <img src="https://img.shields.io/badge/200%2B-Requirements%20Managed-3EE8B5?style=for-the-badge" alt="200+ Requirements"/>
+  <img src="https://img.shields.io/badge/50%2B-Locations%20Global-FF6D00?style=for-the-badge" alt="50+ Locations"/>
+  <img src="https://img.shields.io/badge/CISA%20%2B%20CISM-Certified%202025-7B1FA2?style=for-the-badge" alt="CISA + CISM"/>
 </p>
 
-Ich bin offen für Freelance-Projekte (remote & onsite) im DACH-Raum und EU-weit. Schwerpunkte: DORA-Programme, ISMS-Betrieb, ISO 27001, Audit Readiness und Regulatory Compliance.
+---
 
 <p align="center">
   <a href="mailto:chr.hassert@gmail.com"><strong>chr.hassert@gmail.com</strong></a> · <a href="https://www.linkedin.com/in/christian-hassert"><strong>LinkedIn</strong></a> · <a href="https://chrhassert.github.io"><strong>Portfolio</strong></a>
