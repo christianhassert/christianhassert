@@ -74,7 +74,7 @@ My focus is bridging the gap between regulation and operational implementation �
 
 <p align="center">
   <a href="https://chrhassert.github.io">
-    <img src="./assets/ECB_BaFin_Prozess_Animation.gif" alt="ECB/BaFin Inspection Coordination Process — Interactive Version" width="700"/>
+    <img src="./ECB_BaFin_Prozess_Animation.gif" alt="ECB/BaFin Inspection Coordination Process — Interactive Version" width="700"/>
   </a>
   <br/>
   <sub>ECB/BaFin On-Site Inspection — Information Request Coordination Flow · <a href="https://chrhassert.github.io">Interactive Version</a></sub>
