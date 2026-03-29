@@ -72,7 +72,13 @@ My focus is bridging the gap between regulation and operational implementation �
 | **Global IS Governance Build-Up** | International reinsurer — 50+ locations, 6 continents | Operationalized group-level IS governance incl. RACI, processes & policies |
 | **SOC Target Operating Model** | International bank (with IBM) — Security Architecture | Consolidated fragmented SOC processes into a scalable operating model |
 
-> Interactive visualization of my coordination process: [chrhassert.github.io](https://chrhassert.github.io)
+<p align="center">
+  <a href="https://chrhassert.github.io">
+    <img src="./assets/ECB_BaFin_Prozess_Animation.gif" alt="ECB/BaFin Inspection Coordination Process — Interactive Version" width="700"/>
+  </a>
+  <br/>
+  <sub>ECB/BaFin On-Site Inspection — Information Request Coordination Flow · <a href="https://chrhassert.github.io">Interactive Version</a></sub>
+</p>
 
 ---
 
